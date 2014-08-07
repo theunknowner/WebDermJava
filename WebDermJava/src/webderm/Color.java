@@ -14,4 +14,11 @@ public class Color {
 		}
 		return vec;
 	}
+	
+	String checkIsBlack(int r, int g, int b) {
+		if(r<16 && g<16 && b<16) {
+			return "Black";
+		}
+		return "OTHER";
+	}
 }

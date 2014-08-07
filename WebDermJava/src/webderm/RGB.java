@@ -64,4 +64,39 @@ public class RGB {
 			e.printStackTrace();
 		}
 	}
+	
+	public String checkBlack(int r, int g, int b) {
+		if(r<16 && g<16 && b<16) return "Black25";
+		
+		return "OTHER";
+	}
+	
+	public String pushColor(int red, int green, int blue) {
+		PushColor push = PushColor.getInstance();
+		String pix = push.pushColor(red, green, blue);
+		return pix;
+	}
+	
+	public double getDist() {
+		PushColor push = PushColor.getInstance();
+		return push.getDist();
+	}
+
+	public int getIndex() {
+		PushColor push = PushColor.getInstance();
+		return push.getIndex();
+	}
+	
+	public double getColorLevel(String color, String mainColor) {
+		double level=0;
+		String str = null;
+		if(color.contains(mainColor)) {
+			
+		}
+		
+		return level;
+	}
+	
+	
+	
 }

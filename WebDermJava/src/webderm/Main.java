@@ -12,11 +12,8 @@ public class Main {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		RGB rgb = RGB.getInstance();
 		rgb.importThresholds();
-		for(int i=0; i<rgb.absMeanThreshold.size(); i++) {
-			for(int j=0; j<rgb.absMeanThreshold.get(i).size(); j++) {
-				System.out.println(rgb.absMeanThreshold.get(i).get(j));
-			}
-		}
+		double d = rgb.getColorLevel("Gray40Pink40", "Gray");
+		System.out.println(d);
 	}
 
 }
