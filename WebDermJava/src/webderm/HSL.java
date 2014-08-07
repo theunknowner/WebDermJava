@@ -15,6 +15,22 @@ public class HSL {
 	public ArrayList<ArrayList<Double>> lumLevel = new ArrayList<ArrayList<Double>>();
 	
 	private double H,S,L;
+	
+	private double minRGB(double red, double green, double blue) {
+		if(red<=green && red<=blue) return red;
+		if(green<=blue && green<=red) return green;
+		
+		return blue;
+	}
+	
+	private double maxRGB(double red, double green, double blue) {
+		if(red>=green && red>=blue) return red;
+		if(green>=blue && green>=red) return green;
+		
+		return blue;
+	}
+	
+/************************Public Methods**********************/
 
 	@SuppressWarnings("unchecked")
 	public void importThresholds() {
@@ -89,24 +105,11 @@ public class HSL {
 		}
 	}
 	
-	private double minRGB(double red, double green, double blue) {
-		if(red<=green && red<=blue) return red;
-		if(green<=blue && green<=red) return green;
-		
-		return blue;
-	}
-	
-	private double maxRGB(double red, double green, double blue) {
-		if(red>=green && red>=blue) return red;
-		if(green>=blue && green>=red) return green;
-		
-		return blue;
-	}
-	
-	public void rgb2hsl(double red, double green, double blue) {
+	public double[] rgb2hsl(double red, double green, double blue) {
 		double r,g,b;
 		double min, max;
 		double delta;
+		double[] HSL = new double[3];
 		r = red/255;
 		g = green/255;
 		b = blue/255;
@@ -134,6 +137,10 @@ public class HSL {
 			H *= 60;
 			if(H<0) H+=360;
 		}
+		HSL[0] = Math.round(H); 
+		HSL[1] = MyMath.roundDecimal(S,2); 
+		HSL[2] = MyMath.roundDecimal(L,2);
+		return HSL;
 	}
 	
 	public int getHue() {
@@ -146,6 +153,41 @@ public class HSL {
 	
 	public double getLum() {
 		return L;
+	}
+	
+	private double hue2rgb(double var1, double var2, double vH) {
+		if(vH<0) vH+=1;
+		if(vH>1) vH-=1;
+		if((6*vH)<1) return (var1+(var2-var1)*6*vH);
+		if((2*vH)<1) return var2;
+		if((3*vH)<2) return (var1+(var2-var1)*(0.666-vH)*6);
+		return var1;
+	}
+	
+	public int[] hsl2rgb(double hue, double sat, double lum) {
+		double[] RGB = new double[3];
+		int[] results = new int[3];
+		if(sat==0) {
+			RGB[0] = Math.round(lum * 255);
+			RGB[1] = Math.round(lum * 255);
+			RGB[2] = Math.round(lum * 255);
+		}
+		else {
+			double temp1, temp2;
+			if(lum<0.5)
+				temp1 = lum*(1+sat);
+			else
+				temp1 = (lum+sat) - (lum*sat);
+			temp2 = (2*lum) - temp1;
+			hue /= 360;
+			RGB[0] = Math.round(255*hue2rgb(temp2,temp1,(hue+0.333)));
+			RGB[1] = Math.round(255*hue2rgb(temp2,temp1,hue));
+			RGB[2] = Math.round(255*hue2rgb(temp2,temp1,(hue-0.333)));
+		}
+		results[0] = (int)RGB[0];
+		results[1] = (int)RGB[1];
+		results[2] = (int)RGB[2];
+		return results;
 	}
 	
 	public double calcLum(int red, int green, int blue) {

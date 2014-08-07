@@ -12,8 +12,9 @@ public class Main {
 		System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 		RGB rgb = RGB.getInstance();
 		rgb.importThresholds();
-		double d = rgb.getColorLevel("Gray40Pink40", "Gray");
-		System.out.println(d);
+		new DetectFaceDemo().run();
+		//double d = rgb.getColorLevel("Gray40Pink40", "Gray");
+		//System.out.println(d);
 	}
 
 }

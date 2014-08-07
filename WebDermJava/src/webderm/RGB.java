@@ -66,7 +66,7 @@ public class RGB {
 	}
 	
 	public String checkBlack(int r, int g, int b) {
-		if(r<16 && g<16 && b<16) return "Black25";
+		if(r==0 && g==0 && b==0) return "Zero";
 		
 		return "OTHER";
 	}
@@ -85,6 +85,22 @@ public class RGB {
 	public int getIndex() {
 		PushColor push = PushColor.getInstance();
 		return push.getIndex();
+	}
+	
+	public double calcPerceivedBrightness(double red, double green, double blue) {
+		double lum;
+		lum = Math.sqrt((0.299*red*red) + (0.587*green*green) + (0.114*blue*blue));
+		return lum;
+	}
+	
+	public double calcGrayLevel(int red, int green, int blue) {
+		HSL hsl = new HSL();
+		double sat=0;
+		hsl.rgb2hsl(red,green,blue);
+		sat = hsl.getSat();
+		sat = MyMath.roundDecimal(sat,2) * 100;
+		sat = 100 - sat;
+		return sat;
 	}
 	
 	public double getColorLevel(String color, String mainColor) {
